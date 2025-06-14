@@ -1,0 +1,15 @@
+{
+  "name": "Veal Swap",
+  "short_name": "VealSwap",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#00FF41",
+  "icons": [
+    {
+      "src": "/veal_swap_icon_512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
