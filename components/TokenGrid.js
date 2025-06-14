@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { getPopularTokens } from '@pump-fun/pump-sdk';
+
+const getPopularTokens = async () => {
+  const res = await fetch('https://pump.fun/api/tokens/popular');
+  return await res.json();
+};
 
 export default function TokenGrid() {
   const [tokens, setTokens] = useState([]);
@@ -19,22 +23,8 @@ export default function TokenGrid() {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    const checkStopLosses = () => {
-      tokens.forEach((token) => {
-        const stopPrice = parseFloat(localStorage.getItem(`stoploss-${token.id}`));
-        const isActive = localStorage.getItem(`activeStoploss-${token.id}`) === 'true';
-        if (isActive && stopPrice && token.price <= stopPrice) {
-          alert(`${token.ticker} has dropped below your stop-loss of $${stopPrice}`);
-        }
-      });
-    };
-    const checkInterval = setInterval(checkStopLosses, 2000);
-    return () => clearInterval(checkInterval);
-  }, [tokens]);
-
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px', padding: '10px' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px' }}>
       {tokens.map((token) => (
         <div key={token.id} style={{ border: '1px solid #00FF41', padding: '10px', color: '#00FF41' }}>
           <div style={{ fontWeight: 'bold' }}>{token.ticker}</div>
