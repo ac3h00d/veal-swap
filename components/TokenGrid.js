@@ -15,12 +15,26 @@ export default function TokenGrid() {
     }
 
     fetchTokens();
-    const interval = setInterval(fetchTokens, 2000); // every 2 seconds
+    const interval = setInterval(fetchTokens, 2000);
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const checkStopLosses = () => {
+      tokens.forEach((token) => {
+        const stopPrice = parseFloat(localStorage.getItem(`stoploss-${token.id}`));
+        const isActive = localStorage.getItem(`activeStoploss-${token.id}`) === 'true';
+        if (isActive && stopPrice && token.price <= stopPrice) {
+          alert(`${token.ticker} has dropped below your stop-loss of $${stopPrice}`);
+        }
+      });
+    };
+    const checkInterval = setInterval(checkStopLosses, 2000);
+    return () => clearInterval(checkInterval);
+  }, [tokens]);
+
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px', padding: '10px' }}>
       {tokens.map((token) => (
         <div key={token.id} style={{ border: '1px solid #00FF41', padding: '10px', color: '#00FF41' }}>
           <div style={{ fontWeight: 'bold' }}>{token.ticker}</div>
