@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
-const getPopularTokens = async () => {
-  const res = await fetch('https://pump.fun/api/tokens/popular');
-  return await res.json();
-};
+import { getPopularTokens } from '@pump-fun/pump-sdk';
 
 export default function TokenGrid() {
   const [tokens, setTokens] = useState([]);
@@ -12,9 +8,10 @@ export default function TokenGrid() {
     async function fetchTokens() {
       try {
         const tokenData = await getPopularTokens();
+        console.log("Fetched token data:", tokenData); // 🔍 Debug output
         setTokens(tokenData);
       } catch (error) {
-        console.error('Error fetching tokens:', error);
+        console.error("Error fetching tokens from pump-sdk:", error);
       }
     }
 
