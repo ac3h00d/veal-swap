@@ -8,7 +8,7 @@ export default function Header() {
       borderBottom: '1px solid #00FF41',
       paddingBottom: '20px'
     }}>
-      <h1 style={{ color: '#00FF41', fontFamily: 'monospace' }}>
+      <h1 style={{ color: '#00FF41', fontFamily: 'monospace', fontSize: '24px' }}>
         Veal Swap | Matrix Tracker
       </h1>
     </header>
