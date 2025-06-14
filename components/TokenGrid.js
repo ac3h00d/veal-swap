@@ -15,11 +15,25 @@ export default function TokenGrid() {
     }
 
     fetchTokens();
-    const interval = setInterval(fetchTokens, 15000); // refresh every 15 sec
+    const interval = setInterval(fetchTokens, 2000); // refresh every 15 sec
 
     return () => clearInterval(interval);
   }, []);
+useEffect(() => {
+  const checkStopLosses = () => {
+    tokens.forEach(token => {
+      const stopPrice = parseFloat(localStorage.getItem(`stoploss-${token.id}`));
+      const isActive = localStorage.getItem(`activeStoploss-${token.id}`) === 'true';
 
+      if (isActive && stopPrice && token.price < stopPrice) {
+        alert(`${token.ticker} has dropped below your stop-loss of $${stopPrice.toFixed(2)}!`);
+      }
+    });
+  };
+
+  const checkInterval = setInterval(checkStopLosses, 2000);
+  return () => clearInterval(checkInterval);
+}, [tokens]);
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '15px', marginTop: '40px' }}>
       {tokens.map((token) => (
