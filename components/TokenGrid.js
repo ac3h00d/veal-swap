@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { getPopularTokens } from '@pump-fun/pump-sdk';
 
 export default function TokenGrid() {
   const [tokens, setTokens] = useState([]);
@@ -6,61 +7,45 @@ export default function TokenGrid() {
   useEffect(() => {
     async function fetchTokens() {
       try {
-        const res = await fetch('https://pump.fun/api/tokens/popular');
-        const data = await res.json();
-        setTokens(data);
+        const tokenData = await getPopularTokens();
+        setTokens(tokenData);
       } catch (error) {
         console.error('Error fetching tokens:', error);
       }
     }
 
     fetchTokens();
-    const interval = setInterval(fetchTokens, 2000); // refresh every 15 sec
-
+    const interval = setInterval(fetchTokens, 2000); // every 2 seconds
     return () => clearInterval(interval);
   }, []);
-useEffect(() => {
-  const checkStopLosses = () => {
-    tokens.forEach(token => {
-      const stopPrice = parseFloat(localStorage.getItem(`stoploss-${token.id}`));
-      const isActive = localStorage.getItem(`activeStoploss-${token.id}`) === 'true';
 
-      if (isActive && stopPrice && token.price < stopPrice) {
-        alert(`${token.ticker} has dropped below your stop-loss of $${stopPrice.toFixed(2)}!`);
-      }
-    });
-  };
-
-  const checkInterval = setInterval(checkStopLosses, 2000);
-  return () => clearInterval(checkInterval);
-}, [tokens]);
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '15px', marginTop: '40px' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px' }}>
       {tokens.map((token) => (
-<div key={token.id} style={{ border: '1px solid #00FF41', padding: '10px', borderRadius: '6px', background: '#111', color: '#00FF41' }}>
-  <div style={{ fontWeight: 'bold' }}>{token.ticker}</div>
-  <div style={{ fontSize: '12px' }}>{token.name}</div>
-  <div style={{ fontSize: '10px' }}>MC: ${Math.round(token.market_cap).toLocaleString()}</div>
+        <div key={token.id} style={{ border: '1px solid #00FF41', padding: '10px', color: '#00FF41' }}>
+          <div style={{ fontWeight: 'bold' }}>{token.ticker}</div>
+          <div style={{ fontSize: '12px' }}>{token.name}</div>
+          <div style={{ fontSize: '10px' }}>MC: ${Math.round(token.price * token.totalSupply)}</div>
 
-  <label style={{ fontSize: '10px', display: 'block', marginTop: '5px' }}>
-    Stop-Loss:
-    <input
-      type="number"
-      placeholder="0.00"
-      defaultValue={localStorage.getItem(`stoploss-${token.id}`) || ''}
-      style={{ marginLeft: '5px', width: '60px', fontSize: '10px' }}
-      onBlur={(e) => localStorage.setItem(`stoploss-${token.id}`, e.target.value)}
-    />
-  </label>
+          <label style={{ fontSize: '10px', display: 'block', marginTop: '10px' }}>
+            Stop-Loss:
+            <input
+              type="number"
+              placeholder="0.00"
+              defaultValue={localStorage.getItem(`stoploss-${token.id}`) || ''}
+              style={{ marginLeft: '5px', width: '60px' }}
+              onBlur={(e) => localStorage.setItem(`stoploss-${token.id}`, e.target.value)}
+            />
+          </label>
 
-  <label style={{ fontSize: '10px', display: 'block', marginTop: '5px' }}>
-    <input
-      type="checkbox"
-      onChange={(e) => localStorage.setItem(`active-${token.id}`, e.target.checked)}
-      defaultChecked={localStorage.getItem(`active-${token.id}`) === 'true'}
-    /> Enable Stop-Loss
-  </label>
-</div>
+          <label style={{ fontSize: '10px', display: 'block', marginTop: '5px' }}>
+            <input
+              type="checkbox"
+              onChange={(e) => localStorage.setItem(`activeStoploss-${token.id}`, e.target.checked)}
+              defaultChecked={localStorage.getItem(`activeStoploss-${token.id}`) === 'true'}
+            /> Enable Stop-Loss
+          </label>
+        </div>
       ))}
     </div>
   );
