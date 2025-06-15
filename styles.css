@@ -83,3 +83,13 @@ body {
   font-size: 14px;
   color: #ccc;
 }
+/* Header Bar */
+.headerBar {
+  background-color: #0f0f0f;
+  border-bottom: 1px solid #00ff41;
+  padding: 8px 0;
+  text-align: center;
+  color: #00ff41;
+  font-size: 14px;
+  font-family: monospace;
+}
