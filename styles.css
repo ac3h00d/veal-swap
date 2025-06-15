@@ -1,20 +1,23 @@
+/* Base styles */
 body {
-  background-color: black;
-  color: #00ff41;
-  font-family: 'Courier New', Courier, monospace;
   margin: 0;
   padding: 0;
+  background-color: black;
+  color: #00ff41;
+  font-family: monospace;
 }
 
-.container {
+/* Page layout wrapper */
+.layout {
   display: flex;
-  min-height: 100vh;
+  padding: 20px;
 }
 
+/* Sidebar styles */
 .sidebar {
   width: 200px;
   border-right: 1px solid #00ff41;
-  padding: 20px;
+  min-height: 100vh;
 }
 
 .sidebar h2 {
@@ -31,18 +34,21 @@ body {
   cursor: pointer;
 }
 
+/* Main content area */
 .main {
   flex: 1;
   padding: 20px;
 }
 
+/* Token grid layout */
 .tokenGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 16px;
   margin-top: 20px;
 }
 
+/* Each token card style */
 .tokenCard {
   border: 1px solid #00ff41;
   padding: 10px;
