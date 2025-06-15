@@ -1,40 +1,85 @@
-.sidebar {
-  width: 200px;
-  border-right: 1px solid #00ff41;
-  padding: 20px;
+/* Reset */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: black;
+  color: #00ff41;
+  font-family: monospace;
+}
+
+/* Layout Wrapper */
+.layout {
+  display: flex;
   min-height: 100vh;
 }
 
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background-color: #111;
+  border-right: 1px solid #00ff41;
+  padding: 20px;
+  flex-shrink: 0;
+  height: 100vh;
+}
+
 .sidebar h2 {
+  color: #00ff41;
   margin-bottom: 20px;
+  font-size: 18px;
 }
 
 .sidebar ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-.sidebar li {
-  margin-bottom: 10px;
+.sidebar ul li {
+  padding: 10px 0;
+  border-bottom: 1px solid #333;
+  color: #00ff41;
   cursor: pointer;
 }
 
+.sidebar ul li:hover {
+  background-color: #222;
+}
+
+/* Main Content */
 .main {
-  flex: 1;
+  flex-grow: 1;
   padding: 20px;
 }
 
-.layout {
-  display: flex;
-}
-
+/* Token Grid */
 .tokenGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
 }
 
+/* Token Card */
 .tokenCard {
+  background-color: #1a1a1a;
   border: 1px solid #00ff41;
-  padding: 10px;
+  padding: 15px;
+  margin-bottom: 10px;
+  width: 100%;
+  max-width: 250px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.tokenCard h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #00ff41;
+}
+
+.tokenCard p {
+  margin: 5px 0 0;
+  font-size: 14px;
+  color: #ccc;
 }
