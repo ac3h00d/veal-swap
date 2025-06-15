@@ -5,33 +5,33 @@ export default function TokenGrid() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchGraduates = async () => {
+    const fetchGraduatedTokens = async () => {
       try {
         const res = await fetch('https://pump.fun/api/coins?sort=graduated');
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
         const data = await res.json();
-        setTokens(data?.slice(0, 50)); // limit for speed
+        setTokens(data.slice(0, 20));
         setError('');
-        console.log('✅ Graduated Tokens:', data);
       } catch (err) {
-        console.error('❌ Fetch error:', err);
+        console.error(err);
         setError(err.message);
       }
     };
 
-    fetchGraduates();
-    const interval = setInterval(fetchGraduates, 5000);
+    fetchGraduatedTokens();
+    const interval = setInterval(fetchGraduatedTokens, 5000);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div style={{
-      background: 'black',
+      backgroundColor: 'black',
       color: '#00FF41',
       fontFamily: 'monospace',
-      padding: '1rem'
+      padding: '1rem',
+      minHeight: '100vh'
     }}>
-      <h2>🎓 About to Graduate</h2>
+      <h2>🎓 Recently Graduated</h2>
       {error && <div style={{ color: 'red' }}>Error: {error}</div>}
       {!tokens.length && !error && <div>Loading tokens...</div>}
       <div style={{
@@ -40,15 +40,15 @@ export default function TokenGrid() {
         gap: '1rem',
         marginTop: '1rem'
       }}>
-        {tokens.map((token, idx) => (
-          <div key={idx} style={{
+        {tokens.map((token, i) => (
+          <div key={i} style={{
             border: '1px solid #00FF41',
-            padding: '0.5rem',
+            padding: '10px',
             backgroundColor: '#111'
           }}>
-            <div style={{ fontWeight: 'bold' }}>{token.symbol || 'Unknown'}</div>
-            <div style={{ fontSize: '0.8rem' }}>{token.name}</div>
-            <div style={{ fontSize: '0.75rem' }}>Market Cap: ${Math.floor(token?.marketCap || 0)}</div>
+            <strong>{token.symbol}</strong><br/>
+            {token.name}<br/>
+            MC: ${Math.floor(token.marketCap || 0)}
           </div>
         ))}
       </div>
