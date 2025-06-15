@@ -1,40 +1,40 @@
 import Head from 'next/head';
-import styles from '../styles/Home.module.css';
 
 export default function Home() {
+  const fakeTokens = [
+    { name: 'Fentanyl', mcap: '$36.7K' },
+    { name: 'Unemployed Corp', mcap: '$10.3K' },
+    { name: 'Pumps Gone Crazy', mcap: '$19.6K' },
+    { name: 'Toothless', mcap: '$9.7K' },
+  ];
+
   return (
-    <div className={styles.container}>
+    <>
       <Head>
         <title>Veal Swap | Matrix Tracker</title>
-        <meta name="description" content="Matrix-style Solana DEX Tracker" />
-        <link rel="icon" href="/veal_swap_icon.png" />
       </Head>
 
-      <div className={styles.layout}>
-        <aside className={styles.sidebar}>
-          <h2>🧬 Veal Swap</h2>
-          <nav>
-            <ul>
-              <li>Dashboard</li>
-              <li>Wallet</li>
-              <li>Watchlist</li>
-              <li>Settings</li>
-            </ul>
-          </nav>
+      <div className="layout">
+        <aside className="sidebar">
+          <h2>Veal Menu</h2>
+          <ul>
+            <li>🔥 Movers</li>
+            <li>🎓 About to Graduate</li>
+            <li>⭐ Watchlist</li>
+          </ul>
         </aside>
 
-        <main className={styles.main}>
-          <h1>📈 Matrix Tracker</h1>
-          <div className={styles.tokenGrid}>
-            {/* Placeholder for tokens */}
-            {[...Array(12)].map((_, i) => (
-              <div className={styles.tokenCard} key={i}>
-                <p>Token #{i + 1}</p>
+        <main className="main">
+          <div className="tokenGrid">
+            {fakeTokens.map((token, index) => (
+              <div key={index} className="tokenCard">
+                <h3>{token.name}</h3>
+                <p>Market Cap: {token.mcap}</p>
               </div>
             ))}
           </div>
         </main>
       </div>
-    </div>
+    </>
   );
 }
