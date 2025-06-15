@@ -1,18 +1,40 @@
 import Head from 'next/head';
-import Header from '../components/Header';
-import TokenGrid from '../components/TokenGrid';
+import styles from '../styles/Home.module.css';
 
 export default function Home() {
   return (
-    <div style={{ backgroundColor: 'black', minHeight: '100vh', color: 'lime', padding: '20px' }}>
+    <div className={styles.container}>
       <Head>
-        <title>Veal Swap</title>
-        <meta name="description" content="Matrix-style token monitor powered by Solana" />
-        <link rel="icon" href="/veal_swap_icon_512.png" />
+        <title>Veal Swap | Matrix Tracker</title>
+        <meta name="description" content="Matrix-style Solana DEX Tracker" />
+        <link rel="icon" href="/veal_swap_icon.png" />
       </Head>
 
-      <Header />
-      <TokenGrid />
+      <div className={styles.layout}>
+        <aside className={styles.sidebar}>
+          <h2>🧬 Veal Swap</h2>
+          <nav>
+            <ul>
+              <li>Dashboard</li>
+              <li>Wallet</li>
+              <li>Watchlist</li>
+              <li>Settings</li>
+            </ul>
+          </nav>
+        </aside>
+
+        <main className={styles.main}>
+          <h1>📈 Matrix Tracker</h1>
+          <div className={styles.tokenGrid}>
+            {/* Placeholder for tokens */}
+            {[...Array(12)].map((_, i) => (
+              <div className={styles.tokenCard} key={i}>
+                <p>Token #{i + 1}</p>
+              </div>
+            ))}
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
