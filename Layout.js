@@ -1,18 +1,27 @@
 // components/Layout.js
+import Head from 'next/head';
+
 export default function Layout({ children }) {
   return (
-    <div className="layout">
-      <header>
-        <h1>Veal Swap | Matrix Tracker</h1>
-        <nav>
+    <>
+      <Head>
+        <title>Veal Swap | Matrix Tracker</title>
+      </Head>
+
+      <div className="layout">
+        <aside className="sidebar">
+          <h2>Veal Menu</h2>
           <ul>
-            <li>Movers</li>
-            <li>New Tokens</li>
-            <li>Watchlist</li>
+            <li>🔥 Movers</li>
+            <li>🎓 About to Graduate</li>
+            <li>⭐ Watchlist</li>
           </ul>
-        </nav>
-      </header>
-      <main>{children}</main>
-    </div>
+        </aside>
+
+        <main className="main">
+          {children}
+        </main>
+      </div>
+    </>
   );
 }
