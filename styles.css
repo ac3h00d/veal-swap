@@ -1,0 +1,49 @@
+body {
+  background-color: black;
+  color: #00ff41;
+  font-family: 'Courier New', Courier, monospace;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 200px;
+  border-right: 1px solid #00ff41;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.main {
+  flex: 1;
+  padding: 20px;
+}
+
+.tokenGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.tokenCard {
+  border: 1px solid #00ff41;
+  padding: 10px;
+}
