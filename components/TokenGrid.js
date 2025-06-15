@@ -5,61 +5,50 @@ export default function TokenGrid() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchGraduated = async () => {
+    const fetchGraduates = async () => {
       try {
-        const res = await fetch(
-          'https://deep-index.moralis.io/api/v2/pumpfun/graduated',
-          {
-            headers: { 'X-API-Key': 'YOUR_MORALIS_API_KEY' }
-          }
-        );
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const res = await fetch('https://pump.fun/api/coins?sort=graduated');
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
-        console.log('🎓 Graduated tokens:', data);
-        setTokens(data.result || []);
+        setTokens(data?.slice(0, 50)); // limit for speed
         setError('');
+        console.log('✅ Graduated Tokens:', data);
       } catch (err) {
         console.error('❌ Fetch error:', err);
         setError(err.message);
       }
     };
 
-    fetchGraduated();
-    const interval = setInterval(fetchGraduated, 5000);
+    fetchGraduates();
+    const interval = setInterval(fetchGraduates, 5000);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div style={{
-      padding: '20px',
-      backgroundColor: '#000',
+      background: 'black',
       color: '#00FF41',
-      fontFamily: 'monospace'
+      fontFamily: 'monospace',
+      padding: '1rem'
     }}>
-      <div style={{ marginBottom: '12px' }}>
-        {error
-          ? `Error: ${error}`
-          : tokens.length
-            ? `🎓 Showing ${tokens.length} graduated tokens`
-            : 'Loading graduates...'}
-      </div>
-
+      <h2>🎓 About to Graduate</h2>
+      {error && <div style={{ color: 'red' }}>Error: {error}</div>}
+      {!tokens.length && !error && <div>Loading tokens...</div>}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
-        gap: '10px'
+        gap: '1rem',
+        marginTop: '1rem'
       }}>
         {tokens.map((token, idx) => (
           <div key={idx} style={{
             border: '1px solid #00FF41',
-            borderRadius: '4px',
-            padding: '10px',
+            padding: '0.5rem',
             backgroundColor: '#111'
           }}>
-            <div style={{ fontWeight: 'bold' }}>{token.symbol}</div>
-            <div style={{ fontSize: '12px' }}>{token.name}</div>
-            <div style={{ fontSize: '10px' }}>Cap: ${Math.floor(token.marketCap)}</div>
-            <div style={{ fontSize: '10px' }}>Launch: {new Date(token.createdAt).toLocaleTimeString()}</div>
+            <div style={{ fontWeight: 'bold' }}>{token.symbol || 'Unknown'}</div>
+            <div style={{ fontSize: '0.8rem' }}>{token.name}</div>
+            <div style={{ fontSize: '0.75rem' }}>Market Cap: ${Math.floor(token?.marketCap || 0)}</div>
           </div>
         ))}
       </div>
