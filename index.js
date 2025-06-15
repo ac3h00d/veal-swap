@@ -18,15 +18,14 @@ export default function Home() {
         <aside className="sidebar">
           <h2>Veal Menu</h2>
           <ul>
-            <li className="activeTab">🔥 Movers</li>
+            <li>🔥 Movers</li>
             <li>🎓 About to Graduate</li>
             <li>⭐ Watchlist</li>
           </ul>
         </aside>
 
         <main className="main">
-          <div className="headerBar">Live Feed: Latest Token Data from Pump.fun</div>
-
+          <h2 className="sectionTitle">Featured Tokens</h2>
           <div className="tokenGrid">
             {fakeTokens.map((token, index) => (
               <div key={index} className="tokenCard">
@@ -34,11 +33,6 @@ export default function Home() {
                 <p>Market Cap: {token.mcap}</p>
               </div>
             ))}
-          </div>
-
-          <div className="chartPlaceholder">
-            <h3>📈 Selected Token Activity</h3>
-            <div className="chartBox">[ Chart Placeholder ]</div>
           </div>
         </main>
       </div>
