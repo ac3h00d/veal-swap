@@ -1,20 +1,8 @@
-body {
-  margin: 0;
-  padding: 0;
-  background-color: black;
-  color: #00ff41;
-  font-family: monospace;
-}
-
-.layout {
-  display: flex;
-  min-height: 100vh;
-}
-
 .sidebar {
-  width: 220px;
-  padding: 20px;
+  width: 200px;
   border-right: 1px solid #00ff41;
+  padding: 20px;
+  min-height: 100vh;
 }
 
 .sidebar h2 {
@@ -34,24 +22,19 @@ body {
 .main {
   flex: 1;
   padding: 20px;
-  overflow-y: auto;
+}
+
+.layout {
+  display: flex;
 }
 
 .tokenGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 16px;
 }
 
 .tokenCard {
   border: 1px solid #00ff41;
   padding: 10px;
-  background-color: #111;
-  border-radius: 6px;
-  text-align: center;
-  transition: transform 0.2s ease;
-}
-
-.tokenCard:hover {
-  transform: scale(1.05);
 }
