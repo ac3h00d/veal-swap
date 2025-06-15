@@ -5,21 +5,22 @@ export default function TokenGrid() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchGraduatedTokens = async () => {
+    const fetchTokens = async () => {
       try {
-        const res = await fetch('https://pump.fun/api/coins?sort=graduated');
+        const res = await fetch('https://pump.fun/api/coins?scan=true');
         if (!res.ok) throw new Error(`API error: ${res.status}`);
         const data = await res.json();
-        setTokens(data.slice(0, 20));
+        console.log('[✔] Tokens loaded:', data.slice(0, 10));
+        setTokens(data.slice(0, 20)); // adjust count as needed
         setError('');
       } catch (err) {
-        console.error(err);
+        console.error('[✘] Failed to fetch tokens:', err);
         setError(err.message);
       }
     };
 
-    fetchGraduatedTokens();
-    const interval = setInterval(fetchGraduatedTokens, 5000);
+    fetchTokens();
+    const interval = setInterval(fetchTokens, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -31,7 +32,7 @@ export default function TokenGrid() {
       padding: '1rem',
       minHeight: '100vh'
     }}>
-      <h2>🎓 Recently Graduated</h2>
+      <h2>🚀 About to Graduate</h2>
       {error && <div style={{ color: 'red' }}>Error: {error}</div>}
       {!tokens.length && !error && <div>Loading tokens...</div>}
       <div style={{
@@ -46,8 +47,8 @@ export default function TokenGrid() {
             padding: '10px',
             backgroundColor: '#111'
           }}>
-            <strong>{token.symbol}</strong><br/>
-            {token.name}<br/>
+            <strong>{token.symbol}</strong><br />
+            {token.name}<br />
             MC: ${Math.floor(token.marketCap || 0)}
           </div>
         ))}
