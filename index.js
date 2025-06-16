@@ -5,7 +5,7 @@ export default function Home() {
     { name: 'Fentanyl', mcap: '$36.7K' },
     { name: 'Unemployed Corp', mcap: '$10.3K' },
     { name: 'Pumps Gone Crazy', mcap: '$19.6K' },
-    { name: 'Toothless', mcap: '$9.7K' }
+    { name: 'Toothless', mcap: '$9.7K' },
   ];
 
   return (
@@ -18,14 +18,13 @@ export default function Home() {
         <aside className="sidebar">
           <h2>Veal Menu</h2>
           <ul>
-            <li className="activeTab">🔥 Movers</li>
+            <li>🔥 Movers</li>
             <li>🎓 About to Graduate</li>
             <li>⭐ Watchlist</li>
           </ul>
         </aside>
 
         <main className="main">
-          <h2 className="sectionTitle">🔥 Movers</h2>
           <div className="tokenGrid">
             {fakeTokens.map((token, index) => (
               <div key={index} className="tokenCard">
