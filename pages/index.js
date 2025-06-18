@@ -1,19 +1,12 @@
 import Head from 'next/head';
-import { useState } from 'react';
 
 export default function Home() {
-  const allTokens = [
-    { name: 'Fentanyl', mcap: '$36.7K', category: 'movers' },
-    { name: 'Unemployed Corp', mcap: '$10.3K', category: 'graduate' },
-    { name: 'Pumps Gone Crazy', mcap: '$19.6K', category: 'movers' },
-    { name: 'Toothless', mcap: '$9.7K', category: 'watchlist' },
+  const fakeTokens = [
+    { name: 'Fentanyl', mcap: '$36.7K' },
+    { name: 'Unemployed Corp', mcap: '$10.3K' },
+    { name: 'Pumps Gone Crazy', mcap: '$19.6K' },
+    { name: 'Toothless', mcap: '$9.7K' },
   ];
-
-  const [selectedTab, setSelectedTab] = useState('movers');
-
-  const filteredTokens = allTokens.filter(
-    (token) => token.category === selectedTab
-  );
 
   return (
     <>
@@ -25,35 +18,27 @@ export default function Home() {
         <aside className="sidebar">
           <h2>Veal Menu</h2>
           <ul>
-            <li
-              onClick={() => setSelectedTab('movers')}
-              className={selectedTab === 'movers' ? 'activeTab' : ''}
-            >
-              🔥 Movers
-            </li>
-            <li
-              onClick={() => setSelectedTab('graduate')}
-              className={selectedTab === 'graduate' ? 'activeTab' : ''}
-            >
-              🎓 About to Graduate
-            </li>
-            <li
-              onClick={() => setSelectedTab('watchlist')}
-              className={selectedTab === 'watchlist' ? 'activeTab' : ''}
-            >
-              ⭐ Watchlist
-            </li>
+            <li className="activeTab">🔥 Movers</li>
+            <li>🎓 About to Graduate</li>
+            <li>⭐ Watchlist</li>
           </ul>
         </aside>
 
         <main className="main">
           <div className="tokenGrid">
-            {filteredTokens.map((token, index) => (
+            {fakeTokens.map((token, index) => (
               <div key={index} className="tokenCard">
                 <h3>{token.name}</h3>
                 <p>Market Cap: {token.mcap}</p>
               </div>
             ))}
+          </div>
+
+          <div className="chartPlaceholder">
+            <h4>🚨 Live Signal Activity</h4>
+            <div className="chartBox">
+              <p>[Webhook Trigger Logs Appear Here]</p>
+            </div>
           </div>
         </main>
       </div>
