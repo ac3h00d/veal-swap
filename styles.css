@@ -11,13 +11,20 @@ body {
 .layout {
   display: flex;
   height: 100vh;
+  overflow: hidden;
 }
 
+/* Sidebar */
 .sidebar {
-  width: 200px;
+  width: 220px;
   background-color: #0a0a0a;
   border-right: 1px solid #00ff41;
   padding: 20px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  flex-shrink: 0;
 }
 
 .sidebar h2 {
@@ -29,6 +36,7 @@ body {
 .sidebar ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .sidebar li {
@@ -58,7 +66,7 @@ body {
 /* Token Grid */
 .tokenGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 20px;
 }
 
@@ -95,4 +103,28 @@ body {
   align-items: center;
   justify-content: center;
   color: #00ff41;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #00ff41;
+    position: relative;
+  }
+
+  .main {
+    padding: 10px;
+  }
+
+  .tokenGrid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
 }
