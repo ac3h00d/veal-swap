@@ -18,7 +18,7 @@ export default function Home() {
         <aside className="sidebar">
           <h2>Veal Menu</h2>
           <ul>
-            <li className="activeTab">🔥 Movers</li>
+            <li>🔥 Movers</li>
             <li>🎓 About to Graduate</li>
             <li>⭐ Watchlist</li>
           </ul>
@@ -32,13 +32,6 @@ export default function Home() {
                 <p>Market Cap: {token.mcap}</p>
               </div>
             ))}
-          </div>
-
-          <div className="chartPlaceholder">
-            <h3>Matrix Coin Activity</h3>
-            <div className="chartBox">
-              Chart loading...
-            </div>
           </div>
         </main>
       </div>
