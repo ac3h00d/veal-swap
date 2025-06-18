@@ -2,8 +2,6 @@ import Head from 'next/head';
 import { useState } from 'react';
 
 export default function Home() {
-  const [filter, setFilter] = useState('movers');
-
   const allTokens = [
     { name: 'Fentanyl', mcap: '$36.7K', category: 'movers' },
     { name: 'Unemployed Corp', mcap: '$10.3K', category: 'graduate' },
@@ -11,12 +9,11 @@ export default function Home() {
     { name: 'Toothless', mcap: '$9.7K', category: 'watchlist' },
   ];
 
-  const filteredTokens = allTokens.filter(token => {
-    if (filter === 'movers') return token.category === 'movers';
-    if (filter === 'graduate') return token.category === 'graduate';
-    if (filter === 'watchlist') return token.category === 'watchlist';
-    return true;
-  });
+  const [selectedTab, setSelectedTab] = useState('movers');
+
+  const filteredTokens = allTokens.filter(
+    (token) => token.category === selectedTab
+  );
 
   return (
     <>
@@ -29,20 +26,20 @@ export default function Home() {
           <h2>Veal Menu</h2>
           <ul>
             <li
-              className={filter === 'movers' ? 'activeTab' : ''}
-              onClick={() => setFilter('movers')}
+              onClick={() => setSelectedTab('movers')}
+              className={selectedTab === 'movers' ? 'activeTab' : ''}
             >
               🔥 Movers
             </li>
             <li
-              className={filter === 'graduate' ? 'activeTab' : ''}
-              onClick={() => setFilter('graduate')}
+              onClick={() => setSelectedTab('graduate')}
+              className={selectedTab === 'graduate' ? 'activeTab' : ''}
             >
               🎓 About to Graduate
             </li>
             <li
-              className={filter === 'watchlist' ? 'activeTab' : ''}
-              onClick={() => setFilter('watchlist')}
+              onClick={() => setSelectedTab('watchlist')}
+              className={selectedTab === 'watchlist' ? 'activeTab' : ''}
             >
               ⭐ Watchlist
             </li>
