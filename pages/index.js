@@ -1,23 +1,23 @@
 // pages/index.js
-import Head from 'next/head';
-import { useEffect, useState } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
-
-import WalletPanel from '../components/WalletPanel';
-import WalletConnectButton from '../components/WalletConnectButton';
+import Head from "next/head";
+import { useEffect, useState } from "react";
+import Layout from "../Layout";
+import WalletPanel from "../components/WalletPanel";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 export default function Home() {
-  const wallet = useWallet();
-  const [activeTab, setActiveTab] = useState('movers');
+  const { publicKey } = useWallet();
+  const [activeTab, setActiveTab] = useState("movers");
   const [watchlist, setWatchlist] = useState([]);
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('watchlist')) || [];
+    const saved = JSON.parse(localStorage.getItem("watchlist")) || [];
     setWatchlist(saved);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('watchlist', JSON.stringify(watchlist));
+    localStorage.setItem("watchlist", JSON.stringify(watchlist));
   }, [watchlist]);
 
   const toggleWatch = (token) => {
@@ -31,12 +31,12 @@ export default function Home() {
 
   const tokenData = {
     movers: [
-      { name: 'Fentanyl', mcap: '$36.7K' },
-      { name: 'Unemployed Corp', mcap: '$10.3K' },
+      { name: "Fentanyl", mcap: "$36.7K" },
+      { name: "Unemployed Corp", mcap: "$10.3K" },
     ],
     graduate: [
-      { name: 'GEDcoin', mcap: '$4.2K' },
-      { name: 'NightSchool', mcap: '$6.5K' },
+      { name: "GEDcoin", mcap: "$4.2K" },
+      { name: "NightSchool", mcap: "$6.5K" },
     ],
     watchlist,
   };
@@ -44,54 +44,40 @@ export default function Home() {
   const filteredTokens = tokenData[activeTab] || [];
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>Veal Swap | Matrix Tracker</title>
       </Head>
 
-      <div className="layout">
-        <aside className="sidebar">
-          <h2>Veal Menu</h2>
-          <ul>
-            <li className={activeTab === 'movers' ? 'activeTab' : ''} onClick={() => setActiveTab('movers')}>
-              🔥 Movers
-            </li>
-            <li className={activeTab === 'graduate' ? 'activeTab' : ''} onClick={() => setActiveTab('graduate')}>
-              🎓 About to Graduate
-            </li>
-            <li className={activeTab === 'watchlist' ? 'activeTab' : ''} onClick={() => setActiveTab('watchlist')}>
-              ⭐ Watchlist
-            </li>
-          </ul>
-        </aside>
-
-        <main className="main">
-          <WalletConnectButton />
-          <WalletPanel publicKey={wallet.publicKey} />
-
-          <div className="tokenGrid">
-            {filteredTokens.map((token, index) => {
-              const inWatchlist = watchlist.some((t) => t.name === token.name);
-              return (
-                <div key={index} className="tokenCard">
-                  <h3>{token.name}</h3>
-                  <p>Market Cap: {token.mcap}</p>
-                  <button onClick={() => toggleWatch(token)}>
-                    {inWatchlist ? '− Remove from Watchlist' : '+ Add to Watchlist'}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="chartPlaceholder">
-            <h4>🚨 Live Signal Activity</h4>
-            <div className="chartBox">
-              <p>[Webhook Trigger Logs Appear Here]</p>
-            </div>
-          </div>
-        </main>
+      <div className="walletPanel">
+        <WalletMultiButton />
       </div>
-    </>
+
+      <WalletPanel publicKey={publicKey} />
+
+      <div className="tokenGrid">
+        {filteredTokens.map((token, i) => {
+          const inWatchlist = watchlist.some((t) => t.name === token.name);
+          return (
+            <div key={i} className="tokenCard">
+              <h3>{token.name}</h3>
+              <p>Market Cap: {token.mcap}</p>
+              <button onClick={() => toggleWatch(token)}>
+                {inWatchlist
+                  ? "− Remove from Watchlist"
+                  : "+ Add to Watchlist"}
+              </button>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="chartPlaceholder">
+        <h4>🚨 Live Signal Activity</h4>
+        <div className="chartBox">
+          <p>[Webhook Trigger Logs Appear Here]</p>
+        </div>
+      </div>
+    </Layout>
   );
 }
