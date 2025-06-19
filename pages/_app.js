@@ -1,31 +1,27 @@
 // pages/_app.js
 import '../styles.css';
-import { useMemo } from 'react';
-import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import {
-  PhantomWalletAdapter,
-  SolflareWalletAdapter,
-  BackpackWalletAdapter,
+  ConnectionProvider,
+  WalletProvider
+} from '@solana/wallet-adapter-react';
+import {
+  PhantomWalletAdapter
 } from '@solana/wallet-adapter-wallets';
-import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
-import { clusterApiUrl } from '@solana/web3.js';
 
-// Required for wallet adapter styling
-import '@solana/wallet-adapter-react-ui/styles.css';
+import { useMemo } from 'react';
 
-export default function MyApp({ Component, pageProps }) {
-  const endpoint = useMemo(() => clusterApiUrl('mainnet-beta'), []);
-  const wallets = useMemo(
-    () => [new PhantomWalletAdapter(), new SolflareWalletAdapter(), new BackpackWalletAdapter()],
-    []
-  );
+export default function App({ Component, pageProps }) {
+  const network = WalletAdapterNetwork.Mainnet;
+
+  const endpoint = useMemo(() => 'https://api.mainnet-beta.solana.com', []);
+
+  const wallets = useMemo(() => [new PhantomWalletAdapter()], []);
 
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
-        <WalletModalProvider>
-          <Component {...pageProps} />
-        </WalletModalProvider>
+        <Component {...pageProps} />
       </WalletProvider>
     </ConnectionProvider>
   );
