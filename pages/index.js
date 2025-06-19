@@ -1,3 +1,4 @@
+// pages/index.js
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import WalletPanel from '../components/WalletPanel';
@@ -5,7 +6,11 @@ import WalletPanel from '../components/WalletPanel';
 export default function Home() {
   const [activeTab, setActiveTab] = useState('movers');
   const [watchlist, setWatchlist] = useState([]);
+  const [walletConnected, setWalletConnected] = useState(false);
+  const [walletAddress, setWalletAddress] = useState('');
+  const [walletBalance, setWalletBalance] = useState('');
 
+  // Load watchlist
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem('watchlist')) || [];
     setWatchlist(saved);
@@ -14,6 +19,27 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem('watchlist', JSON.stringify(watchlist));
   }, [watchlist]);
+
+  // Connect to Phantom wallet
+  useEffect(() => {
+    const connectWallet = async () => {
+      if (window.solana && window.solana.isPhantom) {
+        try {
+          const res = await window.solana.connect();
+          setWalletConnected(true);
+          setWalletAddress(res.publicKey.toString());
+
+          const connection = new window.solanaWeb3.Connection("https://api.mainnet-beta.solana.com");
+          const balance = await connection.getBalance(res.publicKey);
+          setWalletBalance((balance / 1e9).toFixed(4));
+        } catch (err) {
+          console.error("Wallet connection error:", err);
+        }
+      }
+    };
+
+    connectWallet();
+  }, []);
 
   const toggleWatch = (token) => {
     const exists = watchlist.some((t) => t.name === token.name);
@@ -61,7 +87,7 @@ export default function Home() {
         </aside>
 
         <main className="main">
-          <WalletPanel />
+          <WalletPanel connected={walletConnected} address={walletAddress} balance={walletBalance} />
 
           <div className="tokenGrid">
             {filteredTokens.map((token, index) => {
