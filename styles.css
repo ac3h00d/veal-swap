@@ -1,146 +1,31 @@
-/* Base */
-body {
-  margin: 0;
-  padding: 0;
-  background-color: black;
-  color: #00ff41;
-  font-family: monospace;
-}
-
-/* Layout */
-.layout {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
-}
-
-/* Sidebar */
-.sidebar {
-  width: 220px;
-  background-color: #0a0a0a;
-  border-right: 1px solid #00ff41;
-  padding: 20px;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow-y: auto;
-  flex-shrink: 0;
-}
-
-.sidebar h2 {
-  font-size: 16px;
-  margin-bottom: 10px;
-  color: #00ff41;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar li {
-  margin: 10px 0;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.sidebar li:hover {
-  color: #00ffcc;
-  text-decoration: underline;
-}
-
-.activeTab {
-  font-weight: bold;
-  color: #00ffcc;
-  text-decoration: underline;
-}
-
-/* Main content */
-.main {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto;
-}
-
-/* Token Grid */
-.tokenGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 20px;
-}
-
-/* Token Cards */
-.tokenCard {
-  background-color: #111;
-  border: 1px solid #00ff41;
-  padding: 15px;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 0 8px #00ff41;
-}
-
-.tokenCard:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 12px #00ffcc;
-}
-
-/* Chart Placeholder */
-.chartPlaceholder {
-  margin-top: 40px;
+.settingsPanel {
   background-color: #0a0a0a;
   border: 1px solid #00ff41;
-  padding: 20px;
-  box-shadow: 0 0 6px #00ff41;
-}
-
-.chartBox {
-  margin-top: 10px;
-  height: 200px;
-  background-color: black;
-  border: 1px dashed #00ff41;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #00ff41;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .layout {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    width: 100%;
-    height: auto;
-    border-right: none;
-    border-bottom: 1px solid #00ff41;
-    position: relative;
-  }
-
-  .main {
-    padding: 10px;
-  }
-
-  .tokenGrid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 12px;
-  }
-}
-/* Wallet Panel */
-.walletPanel {
-  background-color: #0a0a0a;
-  border: 1px solid #00ff41;
-  padding: 20px;
+  padding: 10px;
   margin-bottom: 20px;
+  font-family: monospace;
   box-shadow: 0 0 6px #00ff41;
 }
-.walletPanel h3 {
-  margin-top: 0;
+
+.settingsToggle {
   color: #00ffcc;
+  cursor: pointer;
+  margin-bottom: 8px;
+  text-decoration: underline;
 }
-.walletPanel p {
-  margin: 4px 0;
+
+.settingsContent label {
+  display: block;
+  color: #00ff41;
   font-size: 14px;
+}
+
+.settingsContent input {
+  width: 100%;
+  padding: 5px;
+  background: black;
+  border: 1px solid #00ffcc;
+  color: #00ffcc;
+  font-family: monospace;
+  margin-top: 5px;
 }
