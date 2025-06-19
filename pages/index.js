@@ -1,40 +1,30 @@
-// pages/index.js
-
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { fetchLiveTokenData } from '../lib/pollingEngine';
-import WalletPanel from '../components/WalletPanel';
+import { fetchLiveTokens } from '../lib/pollingEngine';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('movers');
   const [watchlist, setWatchlist] = useState([]);
-  const [tokens, setTokens] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [liveTokens, setLiveTokens] = useState([]);
 
-  // Load watchlist from localStorage on mount
+  // Load watchlist from localStorage
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem('watchlist')) || [];
     setWatchlist(saved);
   }, []);
 
-  // Save to localStorage when watchlist updates
+  // Save to localStorage on change
   useEffect(() => {
     localStorage.setItem('watchlist', JSON.stringify(watchlist));
   }, [watchlist]);
 
-  // Fetch live token data
+  // Fetch Pump.fun tokens on mount
   useEffect(() => {
     async function loadTokens() {
-      setLoading(true);
-      const data = await fetchLiveTokenData();
-      setTokens(data);
-      setLoading(false);
+      const tokens = await fetchLiveTokens();
+      setLiveTokens(tokens);
     }
-
     loadTokens();
-
-    const interval = setInterval(loadTokens, 2000); // poll every 2 seconds
-    return () => clearInterval(interval);
   }, []);
 
   const toggleWatch = (token) => {
@@ -47,8 +37,7 @@ export default function Home() {
   };
 
   const tokenData = {
-    movers: tokens,
-    graduate: tokens.slice(10, 20),
+    movers: liveTokens,
     watchlist,
   };
 
@@ -67,9 +56,6 @@ export default function Home() {
             <li className={activeTab === 'movers' ? 'activeTab' : ''} onClick={() => setActiveTab('movers')}>
               🔥 Movers
             </li>
-            <li className={activeTab === 'graduate' ? 'activeTab' : ''} onClick={() => setActiveTab('graduate')}>
-              🎓 About to Graduate
-            </li>
             <li className={activeTab === 'watchlist' ? 'activeTab' : ''} onClick={() => setActiveTab('watchlist')}>
               ⭐ Watchlist
             </li>
@@ -77,27 +63,20 @@ export default function Home() {
         </aside>
 
         <main className="main">
-          <WalletPanel />
-          
-          {loading ? (
-            <p>Loading tokens...</p>
-          ) : (
-            <div className="tokenGrid">
-              {filteredTokens.map((token, index) => {
-                const inWatchlist = watchlist.some((t) => t.name === token.name);
-                return (
-                  <div key={index} className="tokenCard">
-                    <h3>{token.name}</h3>
-                    <p>Market Cap: {token.mcap}</p>
-                    <p>Price: {token.price}</p>
-                    <button onClick={() => toggleWatch(token)}>
-                      {inWatchlist ? '− Remove from Watchlist' : '+ Add to Watchlist'}
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+          <div className="tokenGrid">
+            {filteredTokens.map((token, index) => {
+              const inWatchlist = watchlist.some((t) => t.name === token.name);
+              return (
+                <div key={index} className="tokenCard">
+                  <h3>{token.name}</h3>
+                  <p>Market Cap: {token.mcap}</p>
+                  <button onClick={() => toggleWatch(token)}>
+                    {inWatchlist ? '− Remove from Watchlist' : '+ Add to Watchlist'}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
 
           <div className="chartPlaceholder">
             <h4>🚨 Live Signal Activity</h4>
