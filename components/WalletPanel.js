@@ -1,12 +1,17 @@
 // components/WalletPanel.js
-export default function WalletPanel({ connected, address, balance }) {
+import React from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
+
+export default function WalletPanel() {
+  const { connected, publicKey } = useWallet();
+
   return (
     <div className="walletPanel">
       <h3>🔐 Wallet Info</h3>
       {connected ? (
         <>
-          <p><strong>Address:</strong> {address.slice(0, 4)}...{address.slice(-4)}</p>
-          <p><strong>Balance:</strong> ◎ {balance} SOL</p>
+          <p>✅ Wallet Connected</p>
+          <p>Address: {publicKey.toBase58()}</p>
         </>
       ) : (
         <p style={{ color: 'red' }}>❌ Wallet not connected</p>
