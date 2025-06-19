@@ -1,25 +1,23 @@
+// pages/_app.js
 import '../styles.css';
+import '@solana/wallet-adapter-react-ui/styles.css';
+
 import { useMemo } from 'react';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
-import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import {
   PhantomWalletAdapter,
   SolflareWalletAdapter,
-  BackpackWalletAdapter,
+  TorusWalletAdapter
 } from '@solana/wallet-adapter-wallets';
-import { clusterApiUrl } from '@solana/web3.js';
-
-// Default styles that can be overridden by your app
-require('@solana/wallet-adapter-react-ui/styles.css');
+import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 
 export default function App({ Component, pageProps }) {
-  const endpoint = useMemo(() => clusterApiUrl('mainnet-beta'), []);
+  const network = WalletAdapterNetwork.Devnet;
+  const endpoint = useMemo(() => 'https://api.devnet.solana.com', []);
+
   const wallets = useMemo(
-    () => [
-      new PhantomWalletAdapter(),
-      new SolflareWalletAdapter(),
-      new BackpackWalletAdapter(),
-    ],
+    () => [new PhantomWalletAdapter(), new SolflareWalletAdapter(), new TorusWalletAdapter()],
     []
   );
 
