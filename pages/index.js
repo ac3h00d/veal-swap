@@ -1,12 +1,16 @@
+// pages/index.js
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import WalletConnectButton from '../components/WalletConnectButton';
+import usePumpTokens from '../lib/usePumpTokens';
 import WalletPanel from '../components/WalletPanel';
+import WalletConnectButton from '../components/WalletConnectButton';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('movers');
   const [watchlist, setWatchlist] = useState([]);
-  const [publicKey, setPublicKey] = useState(null);
+  const tokens = usePumpTokens();
+  const { publicKey } = useWallet();
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem('watchlist')) || [];
@@ -27,10 +31,7 @@ export default function Home() {
   };
 
   const tokenData = {
-    movers: [
-      { name: 'Fentanyl', mcap: '$36.7K' },
-      { name: 'Unemployed Corp', mcap: '$10.3K' },
-    ],
+    movers: tokens,
     graduate: [
       { name: 'GEDcoin', mcap: '$4.2K' },
       { name: 'NightSchool', mcap: '$6.5K' },
@@ -63,7 +64,7 @@ export default function Home() {
         </aside>
 
         <main className="main">
-          <WalletConnectButton setPublicKey={setPublicKey} />
+          <WalletConnectButton />
           <WalletPanel publicKey={publicKey} />
 
           <div className="tokenGrid">
