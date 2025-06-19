@@ -1,49 +1,26 @@
-import { useEffect, useState } from 'react';
-import { getSolanaBalance } from '../lib/solanaUtils';
+// components/WalletPanel.js
+import { useEffect, useState } from "react";
+import { getWalletBalance } from "../lib/solanaUtils";
 
-export default function WalletPanel() {
-  const [wallet, setWallet] = useState(null);
+export default function WalletPanel({ publicKey }) {
   const [balance, setBalance] = useState(null);
 
   useEffect(() => {
-    const checkWallet = async () => {
-      if (window?.solana?.isPhantom) {
-        const resp = await window.solana.connect({ onlyIfTrusted: true });
-        setWallet(resp.publicKey.toString());
-
-        const bal = await getSolanaBalance(resp.publicKey.toString());
-        setBalance(bal);
-      }
-    };
-
-    checkWallet();
-  }, []);
-
-  const connectWallet = async () => {
-    if (window?.solana?.isPhantom) {
-      const resp = await window.solana.connect();
-      setWallet(resp.publicKey.toString());
-
-      const bal = await getSolanaBalance(resp.publicKey.toString());
-      setBalance(bal);
-    } else {
-      alert('Phantom Wallet not detected.');
+    if (publicKey) {
+      getWalletBalance(publicKey.toString()).then(setBalance);
     }
-  };
+  }, [publicKey]);
 
   return (
     <div className="walletPanel">
       <h3>🔐 Wallet Info</h3>
-      {wallet ? (
+      {publicKey ? (
         <>
-          <p>📬 {wallet}</p>
-          <p>💰 Balance: {balance?.toFixed(4)} SOL</p>
+          <p>✅ Connected: {publicKey.toString().slice(0, 8)}...</p>
+          <p>💰 Balance: {balance !== null ? `${balance.toFixed(2)} SOL` : "Loading..."}</p>
         </>
       ) : (
-        <>
-          <p style={{ color: 'red' }}>❌ Wallet not connected</p>
-          <button onClick={connectWallet}>🔌 Connect Phantom</button>
-        </>
+        <p style={{ color: "red" }}>❌ Wallet not connected</p>
       )}
     </div>
   );
