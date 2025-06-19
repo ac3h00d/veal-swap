@@ -1,31 +1,24 @@
+// pages/index.js
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { fetchLiveTokens } from '../lib/pollingEngine';
+import { useWallet } from '@solana/wallet-adapter-react';
+
+import WalletPanel from '../components/WalletPanel';
+import WalletConnectButton from '../components/WalletConnectButton';
 
 export default function Home() {
+  const wallet = useWallet();
   const [activeTab, setActiveTab] = useState('movers');
   const [watchlist, setWatchlist] = useState([]);
-  const [liveTokens, setLiveTokens] = useState([]);
 
-  // Load watchlist from localStorage
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem('watchlist')) || [];
     setWatchlist(saved);
   }, []);
 
-  // Save to localStorage on change
   useEffect(() => {
     localStorage.setItem('watchlist', JSON.stringify(watchlist));
   }, [watchlist]);
-
-  // Fetch Pump.fun tokens on mount
-  useEffect(() => {
-    async function loadTokens() {
-      const tokens = await fetchLiveTokens();
-      setLiveTokens(tokens);
-    }
-    loadTokens();
-  }, []);
 
   const toggleWatch = (token) => {
     const exists = watchlist.some((t) => t.name === token.name);
@@ -37,7 +30,14 @@ export default function Home() {
   };
 
   const tokenData = {
-    movers: liveTokens,
+    movers: [
+      { name: 'Fentanyl', mcap: '$36.7K' },
+      { name: 'Unemployed Corp', mcap: '$10.3K' },
+    ],
+    graduate: [
+      { name: 'GEDcoin', mcap: '$4.2K' },
+      { name: 'NightSchool', mcap: '$6.5K' },
+    ],
     watchlist,
   };
 
@@ -56,6 +56,9 @@ export default function Home() {
             <li className={activeTab === 'movers' ? 'activeTab' : ''} onClick={() => setActiveTab('movers')}>
               🔥 Movers
             </li>
+            <li className={activeTab === 'graduate' ? 'activeTab' : ''} onClick={() => setActiveTab('graduate')}>
+              🎓 About to Graduate
+            </li>
             <li className={activeTab === 'watchlist' ? 'activeTab' : ''} onClick={() => setActiveTab('watchlist')}>
               ⭐ Watchlist
             </li>
@@ -63,6 +66,9 @@ export default function Home() {
         </aside>
 
         <main className="main">
+          <WalletConnectButton />
+          <WalletPanel publicKey={wallet.publicKey} />
+
           <div className="tokenGrid">
             {filteredTokens.map((token, index) => {
               const inWatchlist = watchlist.some((t) => t.name === token.name);
