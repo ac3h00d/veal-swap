@@ -1,21 +1,24 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import LiveFeedPlaceholder from '../components/LiveFeedPlaceholder';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('movers');
   const [watchlist, setWatchlist] = useState([]);
+  const [logs, setLogs] = useState([]);
 
-  // Load from localStorage on mount
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem('watchlist')) || [];
     setWatchlist(saved);
   }, []);
 
-  // Save to localStorage on change
   useEffect(() => {
     localStorage.setItem('watchlist', JSON.stringify(watchlist));
   }, [watchlist]);
+
+  const handleStopLossTrigger = (token) => {
+    const log = `[${token.name}] STOP-LOSS HIT — Market Cap fell below threshold (${token.mcap})`;
+    setLogs((prevLogs) => [log, ...prevLogs.slice(0, 4)]);
+  };
 
   const toggleWatch = (token) => {
     const exists = watchlist.some((t) => t.name === token.name);
@@ -23,6 +26,7 @@ export default function Home() {
       setWatchlist(watchlist.filter((t) => t.name !== token.name));
     } else {
       setWatchlist([...watchlist, token]);
+      handleStopLossTrigger(token);
     }
   };
 
@@ -78,7 +82,16 @@ export default function Home() {
             })}
           </div>
 
-          <LiveFeedPlaceholder />
+          <div className="chartPlaceholder">
+            <h4>🚨 Live Signal Activity</h4>
+            <div className="chartBox" style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+              {logs.length === 0 ? (
+                <p>[No stop-losses triggered yet]</p>
+              ) : (
+                logs.map((log, i) => <p key={i}>→ {log}</p>)
+              )}
+            </div>
+          </div>
         </main>
       </div>
     </>
