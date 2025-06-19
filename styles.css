@@ -128,3 +128,19 @@ body {
     gap: 12px;
   }
 }
+/* Wallet Panel */
+.walletPanel {
+  background-color: #0a0a0a;
+  border: 1px solid #00ff41;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 6px #00ff41;
+}
+.walletPanel h3 {
+  margin-top: 0;
+  color: #00ffcc;
+}
+.walletPanel p {
+  margin: 4px 0;
+  font-size: 14px;
+}
