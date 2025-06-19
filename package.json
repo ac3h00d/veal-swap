@@ -10,6 +10,10 @@
     "next": "14.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "@pump-fun/pump-sdk": "^0.0.12"
+    "@solana/web3.js": "^1.94.1",
+    "@solana/wallet-adapter-base": "^0.9.20",
+    "@solana/wallet-adapter-react": "^0.15.18",
+    "@solana/wallet-adapter-react-ui": "^0.9.18",
+    "@solana/wallet-adapter-wallets": "^0.15.18"
   }
 }
