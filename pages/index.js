@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
+import LiveFeedPlaceholder from '../components/LiveFeedPlaceholder';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('movers');
@@ -77,12 +78,7 @@ export default function Home() {
             })}
           </div>
 
-          <div className="chartPlaceholder">
-            <h4>🚨 Live Signal Activity</h4>
-            <div className="chartBox">
-              <p>[Webhook Trigger Logs Appear Here]</p>
-            </div>
-          </div>
+          <LiveFeedPlaceholder />
         </main>
       </div>
     </>
