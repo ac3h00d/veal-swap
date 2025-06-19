@@ -1,10 +1,12 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import WalletPanel from '../components/WalletPanel';
+import SettingsPanel from '../components/SettingsPanel';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('movers');
   const [watchlist, setWatchlist] = useState([]);
+  const [pollingInterval, setPollingInterval] = useState(2000); // <-- New for Settings
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem('watchlist')) || [];
@@ -62,6 +64,7 @@ export default function Home() {
 
         <main className="main">
           <WalletPanel />
+          <SettingsPanel pollingInterval={pollingInterval} setPollingInterval={setPollingInterval} />
 
           <div className="tokenGrid">
             {filteredTokens.map((token, index) => {
